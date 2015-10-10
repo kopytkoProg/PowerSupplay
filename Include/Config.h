@@ -39,6 +39,8 @@
 #define INT_5v_PIN 				PIND2
 #define INT_12v_PIN 			PIND3
 
+#define INT_FLAG_5V 			INTF0
+#define INT_FLAG_12V 			INTF1
 
 #endif
 

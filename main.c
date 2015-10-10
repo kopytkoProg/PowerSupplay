@@ -8,6 +8,9 @@
 #include "uart/uart.h"
 #include "adc/adc.h"
 
+char cahr_buffer[50];
+uint8_t counter = 0;
+
 void set_5v(void) {
 	CONTROLL_PORT |= _BV(CONTROLL_5v_PORT);
 }
@@ -19,7 +22,6 @@ void reset_5v(void) {
 uint8_t is_set_5v(void) {
 	return bit_is_set(CONTROLL_PORT, CONTROLL_5v_PORT); //CONTROLL_PORT & _BV(CONTROLL_5v_PORT);
 }
-char cahr_buffer[50];
 
 int main(void) {
 
@@ -37,9 +39,7 @@ int main(void) {
 	// ============================
 
 	// ADC
-	ADCSRA = (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
-
-
+	ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
 	// Enable 5V
 	set_5v();
@@ -50,7 +50,10 @@ int main(void) {
 	DDRB |= 1 << 0;
 	while (1) {
 		if (!is_set_5v()) {
-			send("Waiting for power on");
+
+			sprintf(cahr_buffer, "Waiting for power on (%u)", counter);
+			send(cahr_buffer);
+
 			_delay_ms(1000);
 			send("Power on");
 			set_5v();
@@ -68,8 +71,19 @@ void onChar(char c) {
 }
 
 ISR(INT_5V_vect) {
+
+	// If already disabled the do nothing
+	if(!is_set_5v()) return;
+
+	counter++;
 	reset_5v();
-	_delay_us(100);
+
+	// Wait after interrupt
+	_delay_us(10);
+	// Clear pending flag
+	GIFR |= _BV(INT_FLAG_5V);
+
+
 }
 
 ISR(INT_12V_vect) {
