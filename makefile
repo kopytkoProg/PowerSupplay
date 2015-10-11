@@ -81,7 +81,7 @@ OBJDIR = .
 
 # List C source files here. (C dependencies are automatically generated.)
 #SRC = $(TARGET).c
-SRC = main.c uart/uart.c adc/adc.c
+SRC = main.c uart/uart.c adc/adc.c pwm/pwm.c
 
 
 # List C++ source files here. (C dependencies are automatically generated.)

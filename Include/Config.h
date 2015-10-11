@@ -18,6 +18,8 @@
 #define CONTROLL_5v_PIN 		PIND4
 #define CONTROLL_12v_PIN 		PIND5
 
+#define OCR1_5v 				OCR1B
+#define OCR_12v 				OCR1A
 
 //========== INTERRUPT ==========
 // INT0 : PD2
