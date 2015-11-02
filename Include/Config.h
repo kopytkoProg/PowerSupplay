@@ -1,48 +1,38 @@
 #ifndef Config
 #define Config
 
-// ========== CONTROLL ==========
+//========== CONTROLL ===========
 // PD5 : OC1A
 // PD4 : OC1B
 
-#define CONTROLL_DDR 			DDRD
-#define CONTROLL_PORT 			PORTD
-#define CONTROLL_PIN 			PIND
 
-#define CONTROLL_5v_DDD 		DDD4
-#define CONTROLL_12v_DDD 		DDD5
 
-#define CONTROLL_5v_PORT 		PD4
-#define CONTROLL_12v_PORT 		PD5
+//========== LCD ================
+#define LCD_FORMAT 				(" %4.1f %4.1f %4.1f")
 
-#define CONTROLL_5v_PIN 		PIND4
-#define CONTROLL_12v_PIN 		PIND5
+//========== MATH ===============
+// Internal Voltage Reference  min 2.3  typ 2.56  max 2.7
+#define VREF 					(2.51)
+#define SCALE_12V 				(1.0/3.0)
+#define SCALE_5V 				(4.0/5.0)
 
-#define OCR1_5v 				OCR1B
-#define OCR_12v 				OCR1A
+
 
 //========== INTERRUPT ==========
 // INT0 : PD2
 // INT1 : PD3
 
-#define INT_5V_vect 			INT0_vect
-#define INT_12V_vect 			INT1_vect
+//========== ADC ================
 
-#define INT_DDR 				DDRD
-#define INT_PORT 				PORTD
-#define INT_PIN 				PIND
 
-#define INT_5v_DDD 				DDD2
-#define INT_12v_DDD 			DDD3
 
-#define INT_5v_PORT 			PD2
-#define INT_12v_PORT 			PD3
+#define VOLTAGE_V5			(0)
+#define CURRENT_V5			(2)
+#define MAX_CURRENT_V5		(4)
 
-#define INT_5v_PIN 				PIND2
-#define INT_12v_PIN 			PIND3
-
-#define INT_FLAG_5V 			INTF0
-#define INT_FLAG_12V 			INTF1
+#define VOLTAGE_V12			(1)
+#define CURRENT_V12			(3)
+#define MAX_CURRENT_V12		(5)
 
 #endif
 

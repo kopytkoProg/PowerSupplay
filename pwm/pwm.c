@@ -20,7 +20,7 @@ void init_pwm(void) {
 	TCCR1B |= _BV(CS10);
 
 	// Limit
-	ICR1 = 99;
+	ICR1 = 1000;
 
 	OCR1A = 100;
 	OCR1B = 100;
@@ -30,16 +30,16 @@ void init_pwm(void) {
 
 /***
  * IF 0 then 100% high
- * IF 100 then 0% high
+ * IF 1000 then 0% high
  */
-void set_OCR1A(uint8_t v){
+void set_OCR1A(uint16_t v){
 	OCR1A = v;
 }
 
 /***
  * IF 0 then 100% high
- * IF 100 then 0% high
+ * IF 1000 then 0% high
  */
-void set_OCR1B(uint8_t v){
+void set_OCR1B(uint16_t v){
 	OCR1B = v;
 }

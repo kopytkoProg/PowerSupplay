@@ -8,38 +8,17 @@
 #include "uart/uart.h"
 #include "adc/adc.h"
 #include "pwm/pwm.h"
+#include "lcd/hd44780.h"
+#include "jtag/jtag.h"
 
 char cahr_buffer[50];
 uint8_t counter = 0;
 
-void set_5v(void) {
-	CONTROLL_PORT |= _BV(CONTROLL_5v_PORT);
-}
-
-void reset_5v(void) {
-	CONTROLL_PORT &= ~_BV(CONTROLL_5v_PORT);
-}
-
-//uint8_t is_set_5v(void) {
-//	return bit_is_set(CONTROLL_PORT, CONTROLL_5v_PORT); //CONTROLL_PORT & _BV(CONTROLL_5v_PORT);
-//}
-
 int main(void) {
 
-	CONTROLL_DDR |= _BV(CONTROLL_12v_DDD) | _BV(CONTROLL_5v_DDD);
-	// ======== INT0, INT1 ========
-	// Both on rising edge
-	MCUCR |= _BV(ISC10) | _BV(ISC11) | _BV(ISC00) | _BV(ISC01);
+	JTAG_is_IO(); // Disable JTAG
 
-	// Enable INT0, INT1
-	GICR |= _BV(INT0) | _BV(INT1);
-	// ============================
-
-	// ADC
 	ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
-
-	// Enable 5V
-	set_5v();
 
 	// Enable global interrupts
 	sei();
@@ -47,20 +26,31 @@ int main(void) {
 	init_adc();					// have to be after sei() because in other case can't enable interrupt
 	init_pwm();
 
-	OCR1_5v = 0;
+	_delay_ms(1000);
+	lcd_init();
+	lcd_clrscr();
 
-	DDRB |= 1 << 0;
+	DDRD |= _BV(DDB4) | _BV(DDB5);
+	set_OCR1A(1000 - 200);
+
 	while (1) {
-		if (OCR1_5v > 0) {
-			 OCR1_5v--;
-		}
 
 		if (is_ready()) start_all_chanel_converrsion();
 		_delay_ms(10);
-		sprintf(cahr_buffer, "A0: %u, A1: %u, OCR1_5v: %u", adc_value[0], adc_value[1], OCR1_5v);
+
+		sprintf(cahr_buffer, "V: %u, A: %u", adc_value[VOLTAGE_V5] , adc_value[CURRENT_V5] );
 		send(cahr_buffer);
 
 
+		float volt_line_12 = adc_value[VOLTAGE_V12] / 1023.0 * VREF; // SCALE_12V;
+		float volt_line_5 = adc_value[VOLTAGE_V5] / 1023.0 * VREF; // SCALE_5V;
+
+
+
+		lcd_goto(0);
+		lcd_putsf(LCD_FORMAT, volt_line_5, 1.0, 2.0);
+		lcd_goto(40);
+		lcd_putsf(LCD_FORMAT, volt_line_12, 1.0, 2.0);
 	}
 
 }
@@ -69,23 +59,3 @@ void onChar(char c) {
 
 }
 
-ISR(INT_5V_vect) {
-
-	// If already disabled the do nothing
-	//if (!is_set_5v()) return;
-
-	counter++;
-
-	OCR1_5v = 100;
-	reset_5v();
-
-	// Wait after interrupt
-	_delay_us(10);
-	// Clear pending flag
-	GIFR |= _BV(INT_FLAG_5V);
-
-}
-
-ISR(INT_12V_vect) {
-
-}

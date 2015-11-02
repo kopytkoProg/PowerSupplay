@@ -9,7 +9,7 @@
 #define ADC_ADC_H_
 
 
-#define ADC_CHANELS			(4)
+#define ADC_CHANELS			(6)
 uint16_t adc_value[ADC_CHANELS];
 
 

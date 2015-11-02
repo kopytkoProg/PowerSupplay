@@ -81,7 +81,7 @@ OBJDIR = .
 
 # List C source files here. (C dependencies are automatically generated.)
 #SRC = $(TARGET).c
-SRC = main.c uart/uart.c adc/adc.c pwm/pwm.c
+SRC = main.c uart/uart.c adc/adc.c pwm/pwm.c lcd/hd44780.c jtag/jtag.c
 
 
 # List C++ source files here. (C dependencies are automatically generated.)
@@ -216,7 +216,7 @@ PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
 # If this is left blank, then it will use the Standard printf version.
 PRINTF_LIB = 
 #PRINTF_LIB = $(PRINTF_LIB_MIN)
-#PRINTF_LIB = $(PRINTF_LIB_FLOAT)
+PRINTF_LIB = $(PRINTF_LIB_FLOAT)
 
 
 # Minimalistic scanf version

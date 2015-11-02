@@ -8,8 +8,8 @@
 #ifndef PWM_PWM_H_
 #define PWM_PWM_H_
 
-void set_OCR1A(uint8_t v);
-void set_TCCR1B(uint8_t v);
+void set_OCR1A(uint16_t v);
+void set_TCCR1B(uint16_t v);
 void init_pwm(void);
 
 

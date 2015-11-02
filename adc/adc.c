@@ -20,6 +20,8 @@ void init_adc(void) {
 	// AREF = AVcc
 	ADMUX = (1 << REFS0);
 
+	ADMUX = _BV(REFS0) | _BV(REFS1);
+
 	// ADC Enable and prescaler of 128
 	// 16000000/128 = 125000
 	ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
