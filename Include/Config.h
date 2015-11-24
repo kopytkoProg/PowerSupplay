@@ -18,7 +18,7 @@
 #define SCALE_OPAMP				(3.3 / 2.2)
 
 // TODO: Change "0.39 / 1.0" to "0.39 / 2.0"
-#define RESISTOR				(0.39 / 1.0)
+#define RESISTOR				(0.39 / 2.0)
 
 //========== INTERRUPT ==========
 // INT0 : PD2
@@ -26,12 +26,12 @@
 
 //========== ADC ================
 
-#define VOLTAGE_V5			(0)
-#define CURRENT_V5			(2)
+#define VOLTAGE_V5			(2)
+#define CURRENT_V5			(0)
 #define MAX_CURRENT_V5		(4)
 
-#define VOLTAGE_V12			(1)
-#define CURRENT_V12			(3)
+#define VOLTAGE_V12			(3)
+#define CURRENT_V12			(1)
 #define MAX_CURRENT_V12		(5)
 
 #endif

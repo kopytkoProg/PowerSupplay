@@ -36,7 +36,7 @@ int main(void) {
 	while (1) {
 
 		if (is_ready()) start_all_chanel_converrsion();
-		_delay_ms(10);
+		_delay_ms(100);
 
 		sprintf(cahr_buffer, "C1: %f, C2: %f, C3: %f, C3: %f, C5: %f, C6: %f",
 				adc_value[VOLTAGE_V5] / 1023.0 * VREF,
