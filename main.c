@@ -71,7 +71,7 @@ int main(void) {
 }
 
 
-#define CYCLIC_TABLE_SIZE 				(200)
+#define CYCLIC_TABLE_SIZE 				(50)
 #define PROTECTION_MAX_AVG_POWER 		(70.0)
 
 void protection(void){
@@ -84,13 +84,31 @@ void protection(void){
     static uint16_t i_5v = 0;
 
 
-	if (TIMEus - last_time < 1000L * 50L) return;
+	static uint16_t measure_num = 0;
 
-	cyclic_table_12v[i_12v = (i_12v + 1) % CYCLIC_TABLE_SIZE] = (12.0f- volt_line_12) * amp_actual_line_12 ;
-	cyclic_table_5v[i_5v = (i_5v + 1) % CYCLIC_TABLE_SIZE] = (5.0f- volt_line_5) * amp_actual_line_5 ;
+	static float p_avg_12v = 0;
+	static float p_avg_5v = 0;
+
+	//======================================================================
+	measure_num ++;
+	p_avg_12v 	+= (12.0f - volt_line_12) * amp_actual_line_12;
+	p_avg_5v 	+= (5.0f - volt_line_5) * amp_actual_line_5;
+
+
+	//======================================================================
+	if (TIMEus - last_time < 1000L * 200L) return;				// Each 0.2 s go inside
+
+
+	cyclic_table_12v[i_12v 	= (i_12v + 1) % CYCLIC_TABLE_SIZE] = p_avg_12v / measure_num;
+	cyclic_table_5v[i_5v 	= (i_5v + 1) % CYCLIC_TABLE_SIZE] = p_avg_5v / measure_num;
+
+	measure_num 	= 0;
+	p_avg_12v 		= 0;
+	p_avg_5v 		= 0;
+
+
 
 	uint16_t i = 0;
-
 	uint16_t over_power_12 = 0;
 	uint16_t over_power_5 = 0;
 
@@ -99,14 +117,11 @@ void protection(void){
 		if (cyclic_table_5v[i] > PROTECTION_MAX_AVG_POWER) over_power_5++;
 	}
 
-
-
 	if (over_power_12 > CYCLIC_TABLE_SIZE / 2 || over_power_5 > CYCLIC_TABLE_SIZE / 2) {
 		buzer_togle();
 	} else {
 		buzer_off();
 	}
-
 
 	last_time = TIMEus;
 }
@@ -139,13 +154,49 @@ void calculate(void){
 void display (void){
 	static uint64_t last_time = 0;
 
+    static uint16_t measure_num = 0;
+
+	static float avg_volt_12v = 0;
+	static float avg_volt_5v = 0;
+	static float avg_amp_12v = 0;
+    static float avg_amp_5v = 0;
+    static float avg_amp_max_12v = 0;
+    static float avg_amp_max_5v = 0;
+
+    //======================================================================
+
+	measure_num++;
+
+	avg_volt_12v 	+= volt_line_12;
+	avg_volt_5v 	+= volt_line_5;
+	avg_amp_12v 	+= amp_actual_line_12;
+	avg_amp_5v 		+= amp_actual_line_5;
+	avg_amp_max_12v += amp_max_line_12;
+	avg_amp_max_5v 	+= amp_max_line_5;
+
+	//======================================================================
 	if (TIMEus - last_time < 1000L * 100L) return;
 
-
 	lcd_goto(0);
-	lcd_putsf(LCD_FORMAT, volt_line_5, amp_actual_line_5, amp_max_line_5);
+	lcd_putsf(LCD_FORMAT, avg_volt_5v / measure_num, avg_amp_5v / measure_num, avg_amp_max_5v / measure_num);
 	lcd_goto(40);
-	lcd_putsf(LCD_FORMAT, volt_line_12, amp_actual_line_12, amp_max_line_12);
+	lcd_putsf(LCD_FORMAT, avg_volt_12v / measure_num, avg_amp_12v / measure_num, avg_amp_max_12v / measure_num);
+
+	measure_num 	= 0;
+
+	avg_volt_12v 	= 0;
+	avg_volt_5v 	= 0;
+	avg_amp_12v 	= 0;
+	avg_amp_5v 		= 0;
+	avg_amp_max_12v = 0;
+	avg_amp_max_5v 	= 0;
+
+//	lcd_goto(0);
+//	lcd_putsf(LCD_FORMAT, volt_line_5, amp_actual_line_5, amp_max_line_5);
+//	lcd_goto(40);
+//	lcd_putsf(LCD_FORMAT, volt_line_12, amp_actual_line_12, amp_max_line_12);
+//
+
 
 
 	last_time = TIMEus;
