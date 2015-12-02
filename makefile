@@ -81,7 +81,7 @@ OBJDIR = .
 
 # List C source files here. (C dependencies are automatically generated.)
 #SRC = $(TARGET).c
-SRC = main.c uart/uart.c adc/adc.c pwm/pwm.c lcd/hd44780.c jtag/jtag.c
+SRC = main.c uart/uart.c adc/adc.c pwm/pwm.c lcd/hd44780.c jtag/jtag.c buzer/buzer.c  timer/timer.c
 
 
 # List C++ source files here. (C dependencies are automatically generated.)
