@@ -6,7 +6,7 @@
 // PD4 : OC1B
 
 //========== LCD ================
-#define LCD_FORMAT 				("%5.2f %4.1f %4.1f")
+#define LCD_FORMAT 				("%5.2f %4.2f %4.2f")
 
 //========== MATH ===============
 // Internal Voltage Reference  min 2.3  typ 2.56  max 2.7

@@ -175,7 +175,7 @@ void display (void){
 	avg_amp_max_5v 	+= amp_max_line_5;
 
 	//======================================================================
-	if (TIMEus - last_time < 1000L * 100L) return;
+	if (TIMEus - last_time < 1000L * 300L) return;
 
 	lcd_goto(0);
 	lcd_putsf(LCD_FORMAT, avg_volt_5v / measure_num, avg_amp_5v / measure_num, avg_amp_max_5v / measure_num);
