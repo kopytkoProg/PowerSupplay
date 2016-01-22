@@ -95,7 +95,7 @@ void fan(void) {
 	float actualDuty = fmaxf((p_avg_12v / measure_num) / FAN_MAX_AVG_POWER_12, (p_avg_5v / measure_num) / FAN_MAX_AVG_POWER_5);
 
 	// Update duty
-	duty = fmaxf(duty - 0.005, 0);
+	if (duty > 0.5f) duty = fmaxf(duty - 0.005, 0);
 	if (actualDuty > duty) duty += (actualDuty - duty) * 0.05;
 
 	duty_OCR1A(duty);

@@ -26,13 +26,13 @@
 
 //========== ADC ================
 
-#define VOLTAGE_V5			(2)
+#define VOLTAGE_V5			(4)
 #define CURRENT_V5			(0)
-#define MAX_CURRENT_V5		(4)
+#define MAX_CURRENT_V5		(2)
 
-#define VOLTAGE_V12			(3)
+#define VOLTAGE_V12			(5)
 #define CURRENT_V12			(1)
-#define MAX_CURRENT_V12		(5)
+#define MAX_CURRENT_V12		(3)
 
 #endif
 
